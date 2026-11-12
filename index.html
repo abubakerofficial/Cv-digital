@@ -768,7 +768,8 @@
       border-radius: 4px;
       padding: 28px 34px 24px 34px;
       box-shadow: 0 22px 48px rgba(0, 0, 0, .38);
-      transform-origin: 50% 0;
+      transform-origin: 50% 42%;
+      will-change: transform, opacity;
       font-family: 'Inter Tight', sans-serif;
     }
 
@@ -2241,15 +2242,39 @@
         btnToggleEdit.textContent = startInEdit ? 'view links' : 'edit links';
         if (startInEdit) populateEditInputs();
 
+        cCard.getAnimations().forEach(a => a.cancel());
+
         if (!RM) {
           cCard.animate(
             [
-              { opacity: 0, transform: 'translateY(-48px) rotate(-3deg)', offset: 0 },
-              { opacity: 1, transform: 'translateY(5px) rotate(.8deg)', offset: 0.72 },
-              { opacity: 1, transform: 'translateY(0) rotate(0deg)', offset: 1 }
+              { opacity: 0, transform: 'translateY(28px) scale(0.78) rotate(-3.5deg)', offset: 0 },
+              { opacity: 1, transform: 'translateY(-6px) scale(1.045) rotate(1.1deg)', offset: 0.56 },
+              { opacity: 1, transform: 'translateY(2px) scale(0.985) rotate(-0.4deg)', offset: 0.8 },
+              { opacity: 1, transform: 'translateY(0) scale(1) rotate(0deg)', offset: 1 }
             ],
-            { duration: 520, easing: EASE, fill: 'both' }
+            { duration: 640, easing: 'cubic-bezier(.22, 1.35, .36, 1)', fill: 'both' }
           );
+
+          const staggerItems = cCard.querySelectorAll(
+            startInEdit
+              ? '.c-head, #cEditPane .c-sec-label, #cEditPane .c-field'
+              : '.c-head, #cViewPane .c-sec-label, #cViewPane .c-row, #cViewPane .c-social-link'
+          );
+          staggerItems.forEach((el, idx) => {
+            el.getAnimations().forEach(a => a.cancel());
+            el.animate(
+              [
+                { opacity: 0, transform: 'translateY(12px) scale(0.94)' },
+                { opacity: 1, transform: 'translateY(0) scale(1)' }
+              ],
+              {
+                duration: 460,
+                delay: 60 + idx * 38,
+                easing: 'cubic-bezier(.3, 1.5, .5, 1)',
+                fill: 'both'
+              }
+            );
+          });
         }
       }
 
@@ -2258,6 +2283,17 @@
         modalOpen = false;
         cBackdrop.classList.remove('open');
         cBackdrop.setAttribute('aria-hidden', 'true');
+
+        if (!RM) {
+          cCard.getAnimations().forEach(a => a.cancel());
+          cCard.animate(
+            [
+              { opacity: 1, transform: 'translateY(0) scale(1) rotate(0deg)' },
+              { opacity: 0, transform: 'translateY(16px) scale(0.88) rotate(1.5deg)' }
+            ],
+            { duration: 220, easing: 'cubic-bezier(.4, 0, .8, .4)', fill: 'forwards' }
+          );
+        }
       }
 
       function populateEditInputs() {
