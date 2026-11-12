@@ -1,0 +1,6 @@
+{
+  "name": "Haldoren — Motion Design Portfolio",
+  "description": "Interactive one-screen motion design portfolio hero with camera dive and case showcase for Haldoren.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
